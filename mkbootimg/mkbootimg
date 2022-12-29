@@ -100,6 +100,9 @@ def write_padded_file(f_out, f_in, padding):
 def parse_int(x):
     return int(x, 0)
 
+def parse_hex(x):
+    return int(x, 16)
+
 def parse_os_version(x):
     match = re.search(r'^(\d{1,3})(?:\.(\d{1,3})(?:\.(\d{1,3}))?)?', x)
     if match:
@@ -135,16 +138,16 @@ def parse_cmdline():
     parser.add_argument('--second', help='path to the 2nd bootloader', type=FileType('rb'))
     parser.add_argument('--cmdline', help='extra arguments to be passed on the '
                         'kernel command line', default='', action=ValidateStrLenAction, maxlen=1536)
-    parser.add_argument('--base', help='base address', type=parse_int, default=0x10000000)
-    parser.add_argument('--kernel_offset', help='kernel offset', type=parse_int, default=0x00008000)
-    parser.add_argument('--ramdisk_offset', help='ramdisk offset', type=parse_int, default=0x01000000)
-    parser.add_argument('--second_offset', help='2nd bootloader offset', type=parse_int,
+    parser.add_argument('--base', help='base address', type=parse_hex, default=0x10000000)
+    parser.add_argument('--kernel_offset', help='kernel offset', type=parse_hex, default=0x00008000)
+    parser.add_argument('--ramdisk_offset', help='ramdisk offset', type=parse_hex, default=0x01000000)
+    parser.add_argument('--second_offset', help='2nd bootloader offset', type=parse_hex,
                         default=0x00f00000)
     parser.add_argument('--os_version', help='operating system version', type=parse_os_version,
                         default=0)
     parser.add_argument('--os_patch_level', help='operating system patch level',
                         type=parse_os_patch_level, default=0)
-    parser.add_argument('--tags_offset', help='tags offset', type=parse_int, default=0x00000100)
+    parser.add_argument('--tags_offset', help='tags offset', type=parse_hex, default=0x00000100)
     parser.add_argument('--board', help='board name', default='', action=ValidateStrLenAction,
                         maxlen=16)
     parser.add_argument('--pagesize', help='page size', type=parse_int,
